@@ -3,12 +3,9 @@
     "version": "0.2.0",
     "description": "Tic-tac-toe",
     "main": "index.html",
-    "scripts": {
-        "test": "echo Hello World"
-    },
     "repository": {
         "type": "git",
-        "url": "git"
+        "url": "https://github.com/hetacz/ticTacToe.git"
     },
     "keywords": [
         "tic-tac-toe",
