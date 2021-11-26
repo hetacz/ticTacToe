@@ -1,21 +1,21 @@
 {
-  "name": "tictactoe",
-  "version": "0.1.0",
-  "description": "A small tic-tac-toe game that will make you cry :)",
-  "main": "index.js",
-  "scripts": {
-    "test": "none"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git"
-  },
-  "keywords": [
-    "tic-tac-toe"
-  ],
-  "author": "hetacz",
-  "license": "ISC",
-  "devDependencies": {
-    "eslint": "^8.2.0"
-  }
+    "name": "tictactoe",
+    "version": "0.1.0",
+    "description": "Tic-tac-toe",
+    "main": "index.html",
+    "scripts": {
+        "test": "echo Hello World"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git"
+    },
+    "keywords": [
+        "tic-tac-toe",
+        "portfolio",
+        "sample",
+        "rafallovesworking"
+    ],
+    "author": "hetacz",
+    "license": "ISC"
 }
