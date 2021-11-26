@@ -17,8 +17,5 @@
         "rafallovesworking"
     ],
     "author": "hetacz",
-    "license": "ISC",
-    "devDependencies": {
-        "eslint": "^8.2.0"
-    }
+    "license": "ISC"
 }
