@@ -1,11 +1,6 @@
 # Tic-tac-toe
 
-## Working AI
-
-TODO:
-- [ ] GUI
-- [ ] Change Players
-- [ ] Random factor
-- [ ] Position Finder
-- [ ] Typescript?
-- [ ] Refactor?
+- 4 moves deep minimax.
+- Play as O or X.
+- Randomly takes equally good moves.
+- Suggests moves.

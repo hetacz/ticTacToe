@@ -7,7 +7,7 @@
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="src/css/style.css">
-        <script defer src="src/js/script.js"></script>
+        <script type="module" defer src="src/js/script.js"></script>
     </head>
     <body>
         <div class="topper">&nbsp;</div>
@@ -16,26 +16,29 @@
         </div>
         <div class="main mid">
             <div class="tictactoe">
-                <div class="grid">
-                  <div class="cell red" data-x="0" data-y="0">1</div>
-                  <div class="cell green" data-x="1" data-y="0">2</div>
-                  <div class="cell" data-x="2" data-y="0"><img src="src/svg/circle.svg"></div>
-                  <div class="cell" data-x="0" data-y="1"><img src="src/svg/cross.svg"></div>
-                  <div class="cell" data-x="1" data-y="1">5</div>
-                  <div class="cell" data-x="2" data-y="1">6</div>
-                  <div class="cell" data-x="0" data-y="2">7</div>
-                  <div class="cell" data-x="1" data-y="2">8</div>
-                  <div class="cell" data-x="2" data-y="2">9</div>
+                <div class="gamegrid">
+                  <div class="cell" data-id="0">0</div>
+                  <div class="cell" data-id="1">1</div>
+                  <div class="cell" data-id="2">2</div>
+                  <div class="cell" data-id="3">3</div>
+                  <div class="cell" data-id="4">4</div>
+                  <div class="cell" data-id="5">5</div>
+                  <div class="cell" data-id="6">6</div>
+                  <div class="cell" data-id="7">7</div>
+                  <div class="cell" data-id="8">8</div>
                 </div>
               </div>
         </div>
         <div class="main bot">
             <div class="menu">
                 <div>
-                    <h3 class="action">Start Game!</h3>
+                    <h3 id="play-as-x" class="green-start">Play as X</h3>
                 </div>
                 <div>
-                    <h3 class="action">Switch Sides</h3>
+                    <h3 id="suggest-move" class="disabled">Suggest Move</h3>
+                </div>
+                <div>
+                    <h3 id="play-as-o" class="red-start">Play as O</h3>
                 </div>
             </div>
         </div>
@@ -43,7 +46,7 @@
             <h3 class="status">Status...</h3>
         </div>
         <div class="main fot">
-            <h6>rafallovesworking</h6>
+            <h6>Rafał Michalski</h6>
         </div>
     </body>
 </html>

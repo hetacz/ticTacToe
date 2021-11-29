@@ -1,0 +1,8 @@
+<svg width="80" height="80" xmlns="http://www.w3.org/2000/svg">
+
+ <g>
+  <title>Cross</title>
+  <line id="line1" y2="64" x2="64" y1="16" x1="16" stroke-width="12" stroke="#ead784"/>
+  <line id="line2" y2="64" x2="16" y1="16" x1="64" stroke-width="12" stroke="#ead784"/>
+ </g>
+</svg>
