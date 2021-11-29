@@ -1,115 +1,96 @@
 'use strict';
 
-//@ts-check
-/* eslint-disable */
-const X = 'x';
-const O = 'o';
-const EMPTY_BOARD = Array.from({ length: 8 }, (_, k) => k);
+import { O, X } from './config.js';
+import game from './game.js';
+import render from './render.js';
+import * as sel from './selectors.js';
 
-class Game {
-
-    #counter;
-    #aiPlayer;
-    #board;
-
-    constructor(aiPlayer, gameBoard) {
-        // menu here?
-        this.#aiPlayer = aiPlayer;
-        this.#board = gameBoard;
-        this.#counter = 0;
-        this.#getEmptyTiles();
-        this.#evaluate(this.aiPlayer);
+class App {
+    #activeGame = false;
+    #aiPlayer = O;
+    #title = 'TicTacToe';
+    constructor() {
+        this.#initialView();
+        sel.gameGrid.addEventListener('click', this.#makeMove.bind(this));
+        sel.playAsX.addEventListener('click', this.#playAsX.bind(this));
+        sel.playAsO.addEventListener('click', this.#playAsO.bind(this));
     }
-
-    get aiPlayer() {
-        return this.#aiPlayer;
+    get humanPlayer() {
+        return this.#aiPlayer === X ? O : X;
     }
-
-    get enemy() {
-        return this.aiPlayer === X ? O : X;
+    #initialView() {
+        sel.cells.forEach((el, i) => {
+            el.innerHTML = this.#title[i];
+            el.classList = 'cell';
+        });
+        sel.statusBar.textContent = 'Start a game as Cross or Circle, Cross moves first.';
+        return this;
     }
+    #makeMove(ev) {
+        console.log(ev.target.dataset.id);
+        if (!ev.target.classList.contains('cell')) { return; }
+        if (!this.#activeGame) { return; }
+        if (game.getEmptyTiles().includes(ev.target.dataset.id)) { return; }
+        this.#activateSuggestion();
+        game.move(ev.target.dataset.id, this.humanPlayer);
+        render.printBoard(game.board);
+        this.#checkForTerminal(this.humanPlayer);
+        game.move(game.evaluate(this.#aiPlayer).tile, this.#aiPlayer);
+        render.printBoard(game.board);
+        this.#checkForTerminal(this.#aiPlayer);
+        return this;
 
-    get board() {
-        return this.#board;
     }
-
-    // get counter() {return this.#counter;}
-    #count() {
-        console.log('this.#counter :>> ', this.#counter);
-        return ++this.#counter;
+    #playAsX(ev) {
+        console.log('ev :>> ', ev);
+        game.resetBoard();
+        render.resetBoard();
+        this.#aiPlayer = O;
+        this.#activeGame = true;
+        sel.statusBar.textContent = 'You play as Cross';
+        this.#activateSuggestion();
+        return this;
     }
-    // #resetCounter() {return this.#counter = 0;}
-
-    #selectBestMove(player, moves) {
-        let bestMove;
-        if (player === this.aiPlayer) {
-            let highScore = Number.NEGATIVE_INFINITY;
-            for (const move of moves) {
-                if (move.score > highScore) {
-                    highScore = move.score;
-                    bestMove = move;
-                }
-            }
-        } else {
-            let highScore = Number.POSITIVE_INFINITY;
-            for (const move of moves) {
-                if (move.score < highScore) {
-                    highScore = move.score;
-                    bestMove = move;
-                }
-            }
+    #playAsO(ev) {
+        console.log('ev :>> ', ev);
+        game.resetBoard();
+        render.resetBoard();
+        this.#aiPlayer = X;
+        this.#activeGame = true;
+        game.move(game.makeFirstMove(), this.#aiPlayer);
+        render.printBoard(game.board);
+        sel.statusBar.textContent = 'You play as Circle';
+        this.#activateSuggestion();
+        return this;
+    }
+    #suggestMove(ev) {
+        console.log('ev :>> ', ev);
+        this.#deactivateSuggestion();
+        render.suggestedMove(game.evaluate(this.humanPlayer).tile);
+        return this;
+    }
+    #checkForTerminal(player) {
+        if (game.winCondition(player)) {
+            this.#activeGame = false;
+            this.#deactivateSuggestion();
+            render.paintWinner(player);
+        } else if (game.getEmptyTiles().length === 0) {
+            this.#activeGame = false;
+            this.#deactivateSuggestion();
+            render.paintDraw();
         }
-        console.log('bestMove :>> ', bestMove);
-        return bestMove;
+        return this;
     }
-
-    #getEmptyTiles() {
-        return this.board.filter((tile) => {
-            return (tile !== X && tile !== O);
-        });
+    #activateSuggestion() {
+        sel.suggestMove.classList.remove('disabled');
+        sel.suggestMove.addEventListener('click', this.#suggestMove.bind(this));
+        return this;
     }
-
-    #winCondition(player) {
-        if (this.board[0] === player && this.board[1] === player && this.board[2] === player) { return true; }
-        if (this.board[3] === player && this.board[4] === player && this.board[5] === player) { return true; }
-        if (this.board[6] === player && this.board[7] === player && this.board[8] === player) { return true; }
-        if (this.board[0] === player && this.board[3] === player && this.board[6] === player) { return true; }
-        if (this.board[1] === player && this.board[4] === player && this.board[7] === player) { return true; }
-        if (this.board[2] === player && this.board[5] === player && this.board[8] === player) { return true; }
-        if (this.board[0] === player && this.board[4] === player && this.board[8] === player) { return true; }
-        if (this.board[2] === player && this.board[4] === player && this.board[6] === player) { return true; }
-        return false;
-    }
-
-    #evaluate(player) {
-        console.log('depth :>> ', this.#count());
-        if (this.#winCondition(this.aiPlayer)) { return { score: 10 }; }
-        else if (this.#winCondition(this.enemy)) { return { score: -10 }; }
-        else if (this.#getEmptyTiles().length === 0) { return { score: 0 }; }
-
-        console.log('Empty Tiles', this.#getEmptyTiles());
-        return this.#selectBestMove(player, this.#getPossibleMoves(player));
-    }
-
-    #getPossibleMoves(player) {
-        const moves = [];
-        this.#getEmptyTiles().forEach((tile) => {
-            const move = {};
-            move.player = player;
-            move.tile = tile;
-            this.#board[tile] = player; // make a move
-            console.log(player + ' on: ' + tile);
-            console.table(this.board);
-            move.score = this.#evaluate(this.enemy).score; // evaluate
-            this.board[tile] = move.tile; // take move back
-            moves.push(move);
-        });
-        console.log('moves :>> ', moves);
-        return moves;
+    #deactivateSuggestion() {
+        sel.suggestMove.classList.add('disabled');
+        sel.suggestMove.removeEventListener('click', this.#suggestMove);
+        return this;
     }
 }
 
-//=========================================================================================================
-const gameBoard = [O, 1, X, X, 4, X, 6, O, O]; // zrób mapę 00 01 02 itd
-console.table(gameBoard);
-new Game(X, gameBoard);
+new App();

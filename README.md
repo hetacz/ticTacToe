@@ -1,3 +1,6 @@
 # Tic-tac-toe
 
-## Working AI
+- 4 moves deep minimax.
+- Play as O or X.
+- Randomly takes equally good moves.
+- Suggests moves.
