@@ -14,6 +14,7 @@ class Render {
         sel.gameGrid.addEventListener('click', makeMove);
         sel.playAsX.addEventListener('click', playAsX);
         sel.playAsO.addEventListener('click', playAsO);
+        return this;
     }
     resetBoard() {
         sel.cells.forEach((el) => {
