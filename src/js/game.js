@@ -4,7 +4,6 @@ class Game {
     #board;
     #maxDepth;
     #random;
-    #depth = 0;
     constructor(gameBoard, maxDepth, randomizeEqualMoves) {
         this.#board = gameBoard;
         this.#maxDepth = maxDepth;
@@ -51,26 +50,25 @@ class Game {
         if (this.board[2] === player && this.board[4] === player && this.board[6] === player) { return true; }
         return false;
     }
-    evaluate(player) {
-        if (this.winCondition(X)) { return { score: 10 - this.#depth }; }
-        else if (this.winCondition(O)) { return { score: -10 + this.#depth }; }
+    evaluate(player, depth = 0) {
+        if (this.winCondition(X)) { return { score: 10 - depth }; }
+        else if (this.winCondition(O)) { return { score: -10 + depth }; }
         else if (this.getEmptyTiles().length === 0) { return { score: 0 }; }
-        else if (this.#depth === this.#maxDepth) { return { score: 0 }; }
+        else if (depth === this.#maxDepth) { return { score: 0 }; }
         console.log('Empty Tiles', this.getEmptyTiles());
-        this.#depth++;
-        return this.#selectBestMove(player, this.#getPossibleMoves(player));
+        return this.#selectBestMove(player, this.#getPossibleMoves(player, depth));
     }
-    #getPossibleMoves(player) {
+    #getPossibleMoves(player, depth) {
         const moves = [];
         this.getEmptyTiles().forEach((tile) => {
             const move = {};
             move.player = player;
             move.tile = tile;
             this.board[tile] = player; // make a move
-            move.depth = this.#depth;
+            move.depth = depth;
             console.log(player + ' on: ' + tile);
             console.table(this.board);
-            move.score = this.evaluate(this.#getOpponent(player)).score; // evaluate
+            move.score = this.evaluate(this.#getOpponent(player), depth + 1).score; // evaluate
             this.board[tile] = move.tile; // take move back
             moves.push(move);
         });
@@ -99,7 +97,6 @@ class Game {
             }
         }
         console.log('bestMove :>> ', bestMove);
-        this.#depth = 0;
         return bestMove;
     }
     #randomBool() {

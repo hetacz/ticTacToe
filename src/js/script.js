@@ -28,9 +28,10 @@ class App {
     }
     #makeMove(ev) {
         console.log(ev.target.dataset.id);
-        if (!ev.target.classList.contains('cell')) { return; }
         if (!this.#activeGame) { return; }
-        if (game.getEmptyTiles().includes(ev.target.dataset.id)) { return; }
+        if (!ev.target.classList.contains('cell')) { return; }
+        if (ev.target.classList.contains('cross')) { return; }
+        if (ev.target.classList.contains('circle')) { return; }
         this.#activateSuggestion();
         game.move(ev.target.dataset.id, this.humanPlayer);
         render.printBoard(game.board);
