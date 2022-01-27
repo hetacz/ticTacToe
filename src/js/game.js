@@ -56,9 +56,7 @@ class Game {
         else if (this.getEmptyTiles().length === 0) { return { score: 0 }; }
         else if (depth === this.#maxDepth) { return { score: 0 }; }
         console.log('Empty Tiles', this.getEmptyTiles());
-        return this.#selectBestMove(player, this.#getPossibleMoves(player, depth));
-    }
-    #getPossibleMoves(player, depth) {
+
         const moves = [];
         this.getEmptyTiles().forEach((tile) => {
             const move = {};
@@ -73,9 +71,7 @@ class Game {
             moves.push(move);
         });
         console.log('moves :>> ', moves);
-        return moves;
-    }
-    #selectBestMove(player, moves) {
+
         let bestMove;
         if (player === X) {
             let highScore = Number.NEGATIVE_INFINITY;
